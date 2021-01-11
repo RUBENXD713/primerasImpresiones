@@ -18,7 +18,7 @@ const Database = use('Database')
 
 class CarSeeder {
   async run () {
-    await Factory.model('app/Models/Car').createMany(10)
+    await Factory.model('App/Models/Car').createMany(10)
   }
 }
 module.exports = CarSeeder
