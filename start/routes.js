@@ -21,9 +21,10 @@ Route.get('/', () => {
 })
 
 
-Route.get('Consultar','FuncioneController.consultaTodo')//.middleware(['edad'])
-Route.post('Agregar','FuncioneController.crear')//.middleware(['edad'])
-Route.delete('Eliminar/:id','FuncioneController.Eliminar')//.middleware(['edad'])
-Route.put('Editar','FuncioneController.Actualizar')//.middleware(['edad'])
+Route.get('Consultar','FuncioneController.consultaTodo').middleware('edad')
+Route.post('Agregar','FuncioneController.crear').middleware('edad')
+Route.put('Editar/:id','FuncioneController.Actualizar')//.middleware(['edad'])
+Route.delete('delete/:id', 'FuncioneController.delete').middleware('edad')
 
+Route.put('update/:id', 'FuncioneController.Actualizar').middleware('edad')
 

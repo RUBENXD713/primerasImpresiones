@@ -2,6 +2,12 @@
 const Database = use('Database')
 const Car = use('App/Models/Car')
 const { validate } = use('Validator')
+const rules = {
+  Modelo: 'required',
+  Marca: 'required',
+  Cantidad: 'required'
+}
+
 
 class FuncioneController {
     async consultaTodo () 
@@ -20,9 +26,9 @@ class FuncioneController {
           if (validation.fails()) {
             session
               .withErrors(validation.messages())
-              .flashExcept([])
+              .flashExcept([Modelo,Marca,Cantidad])
       
-            return response.redirect('debes introducir todos los datos necesarios "modelo,Marca,Cantidad "')
+            return response.redirect('back')
           }  
         const data = request.all()
 
@@ -38,39 +44,32 @@ class FuncioneController {
             return response.json(Error)
         }      
     }
-    async Eliminar (params) 
-    {
-        const rules = {
-            id: 'required'
-        }
-        const {id} = params 
-        const car = await Car.find(id)
-        await car.delete()
 
-        return response.json({Accion:"Modelo eliminado"})
+
+    async delete ({params, response}) 
+    {
+      const carro = await Car.find(params.id)
+      if (await carro.delete())
+        return { 'vehiculo': carro.toJSON()}
+      return response.status(400).send('No se eliminó la información')
     }
-    async Actualizar (request, params)
+
+    async Actualizar ({params, request, response})
     {
-        const rules = {
-            id:'required',
-            modelo: 'required',
-            Marca: 'required',
-            Cantidad: 'required'
-          }
-        const {id} = params
-        const datos = request.all()
+      const car = await Car.find(params.id)
+      const validation = await validate(request.all(), rules)
+        
+      if (validation.fails()) 
+            return response.status(400).send ({Error: 'Datos faltantes, no se actualizó'})
 
-        const car = await Car.find(id)
-        car.Modelo    = datos.Modelo
-        car.marca   = datos.Marca
-        car.cantidad = datos.Cantidad
+      car.Modelo = request.input('Modelo')
+      car.marca = request.input('Marca')
+      car.cantidad = request.input('Cantidad')
+      
+      if (await car.save())
+          return { 'Datos actualizados': car.toJSON()}
 
-        try {
-            await car.save()
-            return response.json(car)
-        } catch (error) {
-            return response.json(Error)
-        }
+      return response.status(400).send('Informacion no Actualizada')
     }
 }
 

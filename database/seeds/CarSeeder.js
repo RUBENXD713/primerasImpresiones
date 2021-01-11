@@ -18,6 +18,39 @@ const Database = use('Database')
 
 class CarSeeder {
   async run () {
+    await Database.table('cars').insert([
+      {
+        Modelo:'Camaro ',
+        marca:'Chevrolet',
+        cantidad:4
+      },
+      {
+        Modelo:'Aveo',
+        marca:'Chevrolet',
+        cantidad:5
+      },
+      {
+        Modelo:'California T',
+        marca:'Ferrari',
+        cantidad:5
+      },
+      {
+        Modelo:'458',
+        marca:'Ferrari',
+        cantidad:1
+      },
+      {
+        Modelo:'Fiesta',
+        marca:'Ford',
+        cantidad:7
+      },
+      {
+        Modelo:'Model X',
+        marca:'Tesla',
+        cantidad:3
+      },
+    ])
+
     await Factory.model('App/Models/Car').createMany(10)
   }
 }

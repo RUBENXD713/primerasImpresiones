@@ -9,13 +9,12 @@ class ValidaEdad {
    * @param {Request} ctx.request
    * @param {Function} next
    */
-  async handle ({ request }, next) {
-    
-    const data = request.all()
-    if(data.edad>17){
-    await next()
+  async handle ({ request, response }, next) {
+    const datos = await request.all()
+    if (datos.edad < 18 ){
+      return response.status(401).send('¡Edad no permitida!')
     }
-    return "Error Edad no valida"
+    await next()
   }
 }
 
