@@ -16,9 +16,9 @@
  const Hash = use('Hash')
  
 
- Factory.blueprint('App/Models/Car', (faker) => {
+ Factory.blueprint('App/Models/Car', async (faker) => {
    return {
-     Modelo: faker.name(),
+     Modelo: faker.first(),
      marca: faker.company(),
      cantidad: faker.number()
    }

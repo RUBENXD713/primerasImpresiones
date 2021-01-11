@@ -10,7 +10,9 @@ class ValidaEdad {
    * @param {Function} next
    */
   async handle ({ request }, next) {
-    if(request.get('edad')>17){
+    
+    const data = request.all()
+    if(data.edad>17){
     await next()
     }
     return "Error Edad no valida"
